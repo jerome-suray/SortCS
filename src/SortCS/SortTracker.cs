@@ -12,12 +12,21 @@ public class SortTracker : ITracker
     private readonly Dictionary<int, (Track Track, KalmanBoxTracker Tracker)> _trackers;
     private readonly ILogger<SortTracker> _logger;
     private int _trackerIndex = 1; // MOT Evaluations requires a start index of 1
+#if !NET9_0_OR_GREATER
+    private readonly float _iouThreshold;
+    private readonly int _maxMisses;
+#endif
 
     public SortTracker(float iouThreshold = 0.3f, int maxMisses = 3)
     {
         _trackers = new Dictionary<int, (Track, KalmanBoxTracker)>();
+#if NET9_0_OR_GREATER
         IouThreshold = iouThreshold;
         MaxMisses = maxMisses;
+#else
+        _iouThreshold = iouThreshold;
+        _maxMisses = maxMisses;
+#endif
     }
 
     public SortTracker(ILogger<SortTracker> logger, float iouThreshold = 0.3f, int maxMisses = 3)
@@ -26,9 +35,15 @@ public class SortTracker : ITracker
         _logger = logger;
     }
 
+#if NET9_0_OR_GREATER
     public float IouThreshold { get; private init; }
 
     public int MaxMisses { get; private init; }
+#else
+    public float IouThreshold => _iouThreshold;
+
+    public int MaxMisses => _maxMisses;
+#endif
 
     public IEnumerable<Track> Track(IEnumerable<RectangleF> boxes)
     {

@@ -1,13 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup> 
-    <TargetFramework>net9.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;netstandard2.0;net461</TargetFrameworks>
     <LangVersion>preview</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>  
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Kees Schollaart, Maarten van Sambeek</Authors>
     <Company>Vision Intelligence</Company>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
     <Version>1.1.0.0</Version>
@@ -26,20 +31,33 @@
     <IncludeSymbols>false</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageIcon>icon.png</PackageIcon>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-  
-  <ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="HungarianAlgorithm" Version="2.2.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="HungarianAlgorithm" Version="2.2.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Buffers" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="HungarianAlgorithm" Version="2.2.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+  </ItemGroup>
+
 
   <Import Project="../../analyzers.targets" />
 

@@ -53,9 +53,15 @@ internal class KalmanFilter
     public Matrix UncertaintyCovariances
     {
         get => _uncertaintyCovariances;
+#if NET9_0_OR_GREATER
         init => _uncertaintyCovariances = value.Rows == _stateSize && value.Columns == _stateSize
             ? value
             : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#else
+        set => _uncertaintyCovariances = value.Rows == _stateSize && value.Columns == _stateSize
+            ? value
+            : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#endif
     }
 
     /// <summary>
@@ -64,17 +70,29 @@ internal class KalmanFilter
     public Matrix ProcessUncertainty
     {
         get;
+#if NET9_0_OR_GREATER
         init => field = value.Rows == _stateSize && value.Columns == _stateSize
             ? value
             : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#else
+        set => field = value.Rows == _stateSize && value.Columns == _stateSize
+            ? value
+            : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#endif
     }
 
     public Matrix MeasurementUncertainty
     {
         get;
+#if NET9_0_OR_GREATER
         init => field = value.Rows == _measurementSize && value.Columns == _measurementSize
             ? value
             : throw new ArgumentException($"Matrix must be of size {_measurementSize}x{_measurementSize}.", nameof(value));
+#else
+        set => field = value.Rows == _measurementSize && value.Columns == _measurementSize
+            ? value
+            : throw new ArgumentException($"Matrix must be of size {_measurementSize}x{_measurementSize}.", nameof(value));
+#endif
     }
 
     /// <summary>
@@ -83,9 +101,15 @@ internal class KalmanFilter
     public Matrix StateTransitionMatrix
     {
         get;
+#if NET9_0_OR_GREATER
         init => field = value.Rows == _stateSize && value.Columns == _stateSize
             ? value
             : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#else
+        set => field = value.Rows == _stateSize && value.Columns == _stateSize
+            ? value
+            : throw new ArgumentException($"Matrix must be of size {_stateSize}x{_stateSize}.", nameof(value));
+#endif
     }
 
     /// <summary>
@@ -94,9 +118,15 @@ internal class KalmanFilter
     public Matrix MeasurementFunction
     {
         get;
+#if NET9_0_OR_GREATER
         init => field = value.Rows == _measurementSize && value.Columns == _stateSize
             ? value
             : throw new ArgumentException($"Matrix must be of size {_measurementSize}x{_stateSize}.", nameof(value));
+#else
+        set => field = value.Rows == _measurementSize && value.Columns == _stateSize
+            ? value
+            : throw new ArgumentException($"Matrix must be of size {_measurementSize}x{_stateSize}.", nameof(value));
+#endif
     }
 
     public void SetState(int index, float values)
